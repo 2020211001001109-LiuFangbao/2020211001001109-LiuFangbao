@@ -1,33 +1,46 @@
 package com.LiuFangbao.Lab1;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-
-@WebServlet("/life")
+@WebServlet(name = "lab1LifeCycleServlet", value = "/lab1Life")
 public class LifeCycleServlet extends HttpServlet {
+    int time=0;
+    public LifeCycleServlet(){
+        System.out.println("I Am from default constructor");
+        System.out.println("2020211001001109 LiuFangbao");
+    }
     @Override
     public void init() throws ServletException {
-        System.out.println("The LifeCycleServlet has been init");
+        time++;
+        System.out.println("init");
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("service");
-        System.out.println(getServletContext().getInitParameter("driver"));
+        time++;
+        PrintWriter out=response.getWriter();
+        out.println("<html><body>");
+        out.println("<h2>Since loading, this servlet</h2>");
+        out.println("<h2>has been access "+time+" times.</h2>");
+        out.println("<h2>2020211001001109 LiuFangbao</h2>");
+        out.println("</body></html>");
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.doGet(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        time++;
+        System.out.println("service");
     }
 
     @Override
     public void destroy() {
-        System.out.println("The LifeCycleServlet has been destoried");
+        time++;
+        System.out.println("destroy");
     }
 }
